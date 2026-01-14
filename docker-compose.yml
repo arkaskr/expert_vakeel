@@ -1,0 +1,35 @@
+services:
+  api:
+    build: ./server
+    container_name: api
+    command: npm run dev
+    ports:
+      - 5000:4000
+    env_file:
+      - ./server/.env
+
+  user:
+    build: ./expert_vakeel
+    container_name: expert_vakeel
+    command: npm run dev
+    env_file:
+      - ./expert_vakeel/.env
+    ports:
+      - 3000:3000
+    
+  legalnetwork:
+    build: ./legalnetwork
+    container_name: legalnetwork
+    command: npm run dev
+    ports:
+      - 3002:3002
+    
+  admin:
+    build: ./admin
+    container_name: admin
+    command: npm run dev
+    env_file:
+      - ./admin/.env
+
+    ports:
+      - 3001:3001

@@ -1,0 +1,9 @@
+src/scripts/
+*.test.js
+*.spec.js
+node_modules/
+.git/
+.gitignore
+README.md
+.vercelignore
+firebase-service-account.json

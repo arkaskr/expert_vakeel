@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "name": "legal-backend",
+  "builds": [
+    {
+      "src": "src/app.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "src/**",
+          "!src/scripts/**",
+          "!**/*.test.js",
+          "!**/*.spec.js",
+          "package.json"
+        ],
+        "bundle": true
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/app.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["fra1"],
+  "outputDirectory": null
+}
