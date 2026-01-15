@@ -331,162 +331,181 @@ export default function Home() {
   return (
     <main className="min-h-[100dvh] bg-white pb-safe pt-safe">
       {/* Hero Section */}
-      <section className="mx-auto grid w-full max-w-screen-xl grid-cols-1 items-center gap-6 px-4 py-6 sm:px-6 md:grid-cols-[7fr_3fr] md:gap-8 md:py-10 lg:gap-12 lg:py-14">
-        {/* Left */}
-        <div className="order-2 md:order-1">
-          {/* SVG Image */}
-          <div className="w-full max-w-[400px] md:max-w-none">
-            <div className="relative w-full overflow-hidden h-[150px] sm:h-[200px] md:h-[250px] flex items-center justify-center">
-              <img
-                src="/assets/Find Top Rated Lawyers & Law Firms From All Over India..svg"
-                alt="Find Top Rated Lawyers & Law Firms From All Over India"
-                className="max-h-full max-w-full object-contain"
-                loading="eager"
-              />
-            </div>
-          </div>
+      <section className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 md:py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          {/* Left Content */}
+          <div>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+              Find the Right Legal Expertise
+            </h1>
+            <p className="text-lg text-gray-600 mb-6">
+              Litigation • Advisory • Documentation
+            </p>
 
-          {/* Search bar */}
-          <form
-            onSubmit={onSubmit}
-            className="mt-4 rounded-2xl border border-gray-100 bg-gray-50 p-3 shadow-sm sm:mt-5 md:mt-6"
-          >
-            {/* mobile: 2 columns at sm, stacked at xs; desktop layout uses auto button size */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] md:gap-4">
-              {/* Category */}
-              <div className="relative">
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  disabled={dynamicLoading}
-                  className="h-11 w-full appearance-none rounded-xl bg-white px-3 pr-9 text-sm text-gray-900 outline-none ring-1 ring-transparent focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:h-12 md:text-base"
-                  aria-label="Select category"
-                >
-                  <option value="">
-                    {dynamicLoading
-                      ? "Loading categories..."
-                      : "Select Category"}
-                  </option>
-                  {dynamicCategories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              </div>
-
-              {/* City */}
-              <div ref={cityDropdownRef} className="relative">
-                <input
-                  type="text"
-                  value={citySearch}
-                  onChange={(e) => handleCityInputChange(e.target.value)}
-                  onFocus={handleCityInputFocus}
-                  onBlur={handleCityInputBlur}
-                  disabled={dynamicLoading}
-                  placeholder={
-                    dynamicLoading ? "Loading cities..." : "Search City"
-                  }
-                  className={`h-11 w-full rounded-xl bg-white px-3 pr-16 text-sm outline-none ring-1 ring-transparent focus:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed md:h-12 md:text-base ${citySelected && citySearch
-                    ? "text-green-700 font-medium"
-                    : "text-gray-900"
-                    }`}
-                  aria-label="Search city"
-                />
-                {citySearch && !dynamicLoading && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCitySearch("");
-                      setCity("");
-                      setCityDropdownOpen(false);
-                      setCitySelected(false);
-                    }}
-                    className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    aria-label="Clear city search"
+            {/* Search bar */}
+            <form
+              onSubmit={onSubmit}
+              className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+            >
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] md:gap-4">
+                {/* Category */}
+                <div className="relative">
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    disabled={dynamicLoading}
+                    className="h-11 w-full appearance-none rounded-lg bg-white px-3 pr-9 text-sm text-gray-900 outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-[#FFA800] disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Select category"
                   >
-                    <X size={16} />
-                  </button>
-                )}
+                    <option value="">
+                      {dynamicLoading
+                        ? "Loading categories..."
+                        : "Select Category"}
+                    </option>
+                    {dynamicCategories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                </div>
 
-                {/* City Dropdown */}
-                {cityDropdownOpen &&
-                  !dynamicLoading &&
-                  filteredCities.length > 0 && (
-                    <div className="absolute top-full z-50 mt-1 w-full max-h-40 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
-                      {filteredCities.map((c) => (
-                        <button
-                          key={c}
-                          onClick={() => handleCitySelect(c)}
-                          className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-xl last:rounded-b-xl transition-colors flex items-center justify-between ${citySelected && c === city
-                            ? "bg-green-50 text-green-700 font-medium"
-                            : ""
+                {/* City */}
+                <div ref={cityDropdownRef} className="relative">
+                  <input
+                    type="text"
+                    value={citySearch}
+                    onChange={(e) => handleCityInputChange(e.target.value)}
+                    onFocus={handleCityInputFocus}
+                    onBlur={handleCityInputBlur}
+                    disabled={dynamicLoading}
+                    placeholder={
+                      dynamicLoading ? "Loading cities..." : "Search City"
+                    }
+                    className={`h-11 w-full rounded-lg bg-white px-3 pr-16 text-sm outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-[#FFA800] disabled:opacity-50 disabled:cursor-not-allowed ${
+                      citySelected && citySearch
+                        ? "text-green-700 font-medium"
+                        : "text-gray-900"
+                    }`}
+                    aria-label="Search city"
+                  />
+                  {citySearch && !dynamicLoading && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCitySearch("");
+                        setCity("");
+                        setCityDropdownOpen(false);
+                        setCitySelected(false);
+                      }}
+                      className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      aria-label="Clear city search"
+                    >
+                      <X size={16} />
+                    </button>
+                  )}
+
+                  {/* City Dropdown */}
+                  {cityDropdownOpen &&
+                    !dynamicLoading &&
+                    filteredCities.length > 0 && (
+                      <div className="absolute top-full z-50 mt-1 w-full max-h-40 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
+                        {filteredCities.map((c) => (
+                          <button
+                            key={c}
+                            onClick={() => handleCitySelect(c)}
+                            className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-lg last:rounded-b-lg transition-colors flex items-center justify-between ${
+                              citySelected && c === city
+                                ? "bg-green-50 text-green-700 font-medium"
+                                : ""
                             }`}
-                        >
-                          <span>{c}</span>
-                          {citySelected && c === city && (
-                            <Check className="h-4 w-4 text-green-600" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                          >
+                            <span>{c}</span>
+                            {citySelected && c === city && (
+                              <Check className="h-4 w-4 text-green-600" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
 
-                {/* No results message */}
-                {cityDropdownOpen &&
-                  !dynamicLoading &&
-                  citySearch.trim() &&
-                  filteredCities.length === 0 && (
-                    <div className="absolute top-full z-50 mt-1 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-500 shadow-lg">
-                      No cities found
-                    </div>
-                  )}
+                  {/* No results message */}
+                  {cityDropdownOpen &&
+                    !dynamicLoading &&
+                    citySearch.trim() &&
+                    filteredCities.length === 0 && (
+                      <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-500 shadow-lg">
+                        No cities found
+                      </div>
+                    )}
+                </div>
+
+                {/* Button */}
+                <button
+                  type="submit"
+                  className="h-11 w-full rounded-lg bg-[#FFA800] px-4 text-sm font-semibold text-black transition hover:bg-[#FFB524] md:min-w-[140px]"
+                >
+                  Search Now!
+                </button>
               </div>
+            </form>
 
-              {/* Button */}
-              <button
-                type="submit"
-                className="h-11 w-full rounded-xl bg-[#FFA800] px-4 text-sm font-semibold text-black transition hover:brightness-95 md:h-12 md:min-w-[160px] md:text-base"
-              >
-                Search Now!
-              </button>
-            </div>
-          </form>
-
-          {/* Highlights (wrap on mobile, no horizontal scroll) */}
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-medium text-white md:mt-6 md:justify-start md:gap-3 md:text-sm">
-            <div className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5">
-              <FaHome className="text-[#EC6325]" />
-              <span>2M+ Profiles</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5">
-              <FaRegSmile className="text-[#EC6325]" />
-              <span className="sm:inline">46K+ Clients</span>
-            </div>
-            <div className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5">
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <FaStar key={i} className="text-yellow-400" />
-                ))}
+            {/* Highlights */}
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
+                <FaHome className="text-[#EC6325]" />
+                <span className="text-sm font-medium">2M+ Profiles</span>
               </div>
-              <span>4.8 Rating</span>
+              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
+                <FaRegSmile className="text-[#EC6325]" />
+                <span className="text-sm font-medium">46K+ Clients</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
+                <div className="flex gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <FaStar key={i} className="text-yellow-400" />
+                  ))}
+                </div>
+                <span className="text-sm font-medium">4.8 Rating</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right (image) */}
-        <div className="order-1 flex justify-center md:order-2">
-          <div className="w-full h-full">
-            {/* Rectangular container with 16:9 aspect ratio */}
-
+          {/* Right Image - You can add an image here if needed */}
+          <div className="hidden md:block">
+            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-amber-50 p-8">
+              <div className="aspect-square relative overflow-hidden rounded-lg">
+                {/* You can add your image here */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <svg
+                      className="h-24 w-24 text-gray-400 mx-auto mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                    <p className="text-gray-600">
+                      Legal professionals across India
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Navigation Buttons Section */}
       <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-10 md:py-12">
-        <div className="text-center mb-8">
+        <div className="ml-9 mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Explore Our Services
           </h2>
@@ -495,7 +514,7 @@ export default function Home() {
           </p>
         </div>
 
-        <ServiceList/>
+        <ServiceList />
 
         {/* <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <button
@@ -569,8 +588,8 @@ export default function Home() {
       {/* Service Promotion Section */}
       {/* <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 md:py-16">
         <div className="overflow-hidden rounded-3xl bg-[#F8F9FA] md:grid md:grid-cols-2"> */}
-          {/* Left: Image */}
-          {/* <div className="relative h-64 w-full md:h-full">
+      {/* Left: Image */}
+      {/* <div className="relative h-64 w-full md:h-full">
             <img
               src="/assets/lawyer.webp"
               alt="Legal Services"
@@ -578,8 +597,8 @@ export default function Home() {
             />
           </div> */}
 
-          {/* Right: Content */}
-          {/* <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
+      {/* Right: Content */}
+      {/* <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
             <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
               Expert Legal Services at Your Fingertips
             </h2>
@@ -685,7 +704,9 @@ export default function Home() {
                     <div className="mt-3 flex items-center justify-between text-[10px] text-gray-500 sm:mt-4 sm:text-[11px]">
                       <span>
                         Asked by{" "}
-                        <span className="text-gray-700">{item.askedBy || 'Lawyer'}</span>
+                        <span className="text-gray-700">
+                          {item.askedBy || "Lawyer"}
+                        </span>
                       </span>
                       <span>{item.timeAgo}</span>
                     </div>

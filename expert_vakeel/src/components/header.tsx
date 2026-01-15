@@ -44,27 +44,20 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-4 lg:px-8">
-        <Link to="/" className="flex shrink-0 items-center gap-2 py-3">
-          <img src="/assets/Group1.png" alt="Expert Vakeel" className="h-9 w-auto select-none sm:h-10" draggable={false} />
-        </Link>
-
-        <form onSubmit={onSubmit} className="hidden flex-1 justify-center px-6 lg:flex">
-          <label className="relative block w-full max-w-[520px]">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search lawyers, law firms..."
-              aria-label="Search"
-              className="h-11 w-full rounded-full bg-gray-100 pl-10 pr-4 text-sm text-gray-800 placeholder:text-gray-400 outline-none ring-1 ring-black/5 transition focus:bg-white focus:ring-2 focus:ring-[#FFA800]/40"
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur shadow-sm">
+      <div className="mx-auto max-w-screen-xl px-4 py-3">
+        {/* Top Row with Logo and Auth */}
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex shrink-0 items-center gap-2">
+            <img
+              src="/assets/Group1.png"
+              alt="Expert Vakeel"
+              className="h-13 w-auto select-none"
+              draggable={false}
             />
-          </label>
-        </form>
+          </Link>
 
-        <div className="flex items-center gap-3 lg:gap-8">
-          <div className="hidden items-center gap-8 text-sm font-medium text-gray-600 lg:flex">
+          <div className="hidden items-center gap-6 md:flex">
             <nav className="flex items-center gap-8">
               {NAV_ITEMS.map((n) => {
                 // Special case: Ask Queries requires login
@@ -73,7 +66,7 @@ export default function Header() {
                     <button
                       key={`${n.label}-guest`}
                       onClick={() => navigate("/login")}
-                      className="hover:text-[#FFA800]"
+                      className="text-sm font-medium text-gray-700 hover:text-[#FFA800] transition-colors"
                     >
                       {n.label}
                     </button>
@@ -88,7 +81,7 @@ export default function Header() {
                       href={n.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-[#FFA800]"
+                      className="text-sm font-medium text-gray-700 hover:text-[#FFA800] transition-colors"
                     >
                       {n.label}
                     </a>
@@ -97,45 +90,81 @@ export default function Header() {
 
                 // Internal link (to) -> <Link>
                 return (
-                  <Link key={`${n.label}-to`} to={(n as any).to} className="hover:text-[#FFA800]">
+                  <Link
+                    key={`${n.label}-to`}
+                    to={(n as any).to}
+                    className="text-sm font-medium text-gray-700 hover:text-[#FFA800] transition-colors"
+                  >
                     {n.label}
                   </Link>
                 );
               })}
             </nav>
+
             {user ? (
-              <div className="flex items-center gap-4">
-                <span>Hello, {user.name || (user as any).fullName}</span>
-                <button onClick={async () => { await logout(); navigate("/login"); }} className="rounded-full bg-[#FFA800] px-4 py-1 text-sm font-semibold text-black hover:brightness-95">Logout</button>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">
+                  Hello, {user.name || (user as any).fullName}
+                </span>
+                <button
+                  onClick={async () => {
+                    await logout();
+                    navigate("/login");
+                  }}
+                  className="rounded-lg bg-[#FFA800] px-4 py-2 text-sm font-semibold text-black hover:bg-[#FFB524] transition-colors"
+                >
+                  Logout
+                </button>
               </div>
             ) : (
-              <Link to="/login" className="flex items-center gap-2 hover:text-[#FFA800]">
-                <User2 className="h-4 w-4" /><span>Login / Sign Up</span>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 rounded-lg bg-[#FFA800] px-4 py-2 text-sm font-semibold text-black hover:bg-[#FFB524] transition-colors"
+              >
+                <User2 className="h-4 w-4" />
+                <span>Login / Sign Up</span>
               </Link>
             )}
           </div>
-          <button aria-label="Toggle menu" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((s) => !s)} className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FFA800]/40 lg:hidden">
+
+          <button
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((s) => !s)}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 focus:outline-none md:hidden"
+          >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
+
+        {/* Search Bar Row */}
+        {/* <div className="mt-4">
+          <form
+            onSubmit={onSubmit}
+            className="relative w-full max-w-2xl mx-auto"
+          >
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Search lawyers, law firms, or legal services..."
+              aria-label="Search"
+              className="h-12 w-full rounded-full bg-gray-100 pl-12 pr-4 text-sm text-gray-800 placeholder:text-gray-400 outline-none ring-1 ring-transparent transition-all focus:bg-white focus:ring-2 focus:ring-[#FFA800]/50"
+            />
+          </form>
+        </div> */}
       </div>
 
-      <form onSubmit={onSubmit} className="px-4 pb-3 lg:hidden">
-        <label className="relative block w-full">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search lawyers, law firms..."
-            aria-label="Search"
-            className="h-11 w-full rounded-full bg-gray-100 pl-10 pr-4 text-sm text-gray-800 placeholder:text-gray-400 outline-none ring-1 ring-black/5 transition focus:bg-white focus:ring-2 focus:ring-[#FFA800]/40"
-          />
-        </label>
-      </form>
-
-      <div id="mobile-menu" className={`lg:hidden overflow-hidden border-t border-gray-200 transition-[max-height,opacity] duration-300 ease-out ${open ? "max-h-[420px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="mx-auto max-w-[1280px] px-4 pb-4 pt-3">
-          <nav className="grid gap-2 text-[15px] font-medium text-gray-700">
+      {/* Mobile Menu */}
+      <div
+        id="mobile-menu"
+        className={`md:hidden overflow-hidden border-t border-gray-200 transition-all duration-300 ease-out ${
+          open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-4 pb-4 pt-3">
+          <nav className="space-y-2">
             {NAV_ITEMS.map((n) => {
               if (n.label === "Ask Queries" && !user) {
                 return (
@@ -145,7 +174,7 @@ export default function Header() {
                       setOpen(false);
                       navigate("/login");
                     }}
-                    className="rounded-lg px-2 py-2 text-left hover:text-[#FFA800] hover:bg-gray-50"
+                    className="block w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#FFA800] transition-colors"
                   >
                     {n.label}
                   </button>
@@ -160,7 +189,7 @@ export default function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-2 py-2 hover:text-[#FFA800] hover:bg-gray-50"
+                    className="block w-full rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#FFA800] transition-colors"
                   >
                     {n.label}
                   </a>
@@ -168,16 +197,41 @@ export default function Header() {
               }
 
               return (
-                <Link key={`${n.label}-mobile-to`} to={(n as any).to} onClick={() => setOpen(false)} className="rounded-lg px-2 py-2 hover:text-[#FFA800] hover:bg-gray-50">
+                <Link
+                  key={`${n.label}-mobile-to`}
+                  to={(n as any).to}
+                  onClick={() => setOpen(false)}
+                  className="block w-full rounded-lg px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#FFA800] transition-colors"
+                >
                   {n.label}
                 </Link>
               );
             })}
+
             {user ? (
-              <button onClick={async () => { setOpen(false); await logout(); navigate("/login"); }} className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#FFA800] px-4 py-2 text-sm font-semibold text-black hover:brightness-95">Logout</button>
+              <div className="mt-4 space-y-2">
+                <div className="px-4 py-2 text-sm text-gray-600">
+                  Hello, {user.name || (user as any).fullName}
+                </div>
+                <button
+                  onClick={async () => {
+                    setOpen(false);
+                    await logout();
+                    navigate("/login");
+                  }}
+                  className="w-full rounded-lg bg-[#FFA800] px-4 py-3 text-sm font-semibold text-black hover:bg-[#FFB524] transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
-              <Link to="/login" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#FFA800] px-4 py-2 text-sm font-semibold text-black hover:brightness-95">
-                <User2 className="h-4 w-4" />Login / Sign Up
+              <Link
+                to="/login"
+                onClick={() => setOpen(false)}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FFA800] px-4 py-3 text-sm font-semibold text-black hover:bg-[#FFB524] transition-colors"
+              >
+                <User2 className="h-4 w-4" />
+                Login / Sign Up
               </Link>
             )}
           </nav>
