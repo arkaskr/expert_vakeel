@@ -60,7 +60,7 @@ export default function ServiceList() {
       (service) =>
         service.name.toLowerCase().includes(query) ||
         service.description.toLowerCase().includes(query) ||
-        service.categories.some((cat) => cat.toLowerCase().includes(query))
+        service.categories.some((cat) => cat.toLowerCase().includes(query)),
     );
   }, [services, searchQuery]);
 
@@ -129,45 +129,53 @@ export default function ServiceList() {
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {filteredServices.map((service) => (
-              <div
-                key={service.id}
-                onClick={() => handleServiceClick(service.id)}
-                className="
-      group cursor-pointer
-      flex items-center gap-4
-      rounded-2xl bg-white
-      border border-gray-100
-      px-5 py-4
-      shadow-sm
-      transition-all duration-300
-      hover:-translate-y-[2px]
-      hover:shadow-md
-    "
-              >
-                {/* LEFT ICON */}
+            {filteredServices.map((service, index) => {
+              // Compute logo path dynamically
+              const logoPath = `/assets/services_logo/p${index + 1}.png`;
+
+              return (
                 <div
+                  key={service.id}
+                  onClick={() => handleServiceClick(service.id)}
                   className="
-        flex h-12 w-12 shrink-0 items-center justify-center
-        rounded-xl
-        bg-blue-50 text-blue-600
-        transition
-        group-hover:bg-blue-600
-        group-hover:text-white
+        group cursor-pointer
+        flex items-center gap-4
+        rounded-2xl bg-white
+        border border-gray-100
+        px-5 py-4
+        shadow-sm
+        transition-all duration-300
+        hover:-translate-y-[2px]
+        hover:shadow-md
       "
                 >
-                  <ChevronRight className="h-6 w-6" />
+                  {/* LEFT ICON / LOGO */}
+                  <div
+                    className="
+          flex h-15 w-15 shrink-0 items-center justify-center
+          rounded-xl
+          bg-blue-50
+          transition
+          group-hover:bg-blue-50
+        "
+                  >
+                    <img
+                      src={logoPath}
+                      alt={service.name}
+                      className="h-15 w-15 object-contain"
+                    />
+                  </div>
+
+                  {/* TITLE */}
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {service.name}
+                  </h3>
+
+                  {/* RIGHT ARROW */}
+                  <ArrowRight className="ml-auto h-5 w-5 text-blue-500 opacity-0 transition group-hover:opacity-100" />
                 </div>
-
-                {/* TITLE */}
-                <h3 className="text-base font-semibold text-gray-900">
-                  {service.name}
-                </h3>
-
-                {/* RIGHT ARROW */}
-                <ArrowRight className="ml-auto h-5 w-5 text-blue-500 opacity-0 transition group-hover:opacity-100" />
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

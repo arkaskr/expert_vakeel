@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHome, FaRegSmile, FaStar } from "react-icons/fa";
+import { FaHome, FaMapMarkerAlt, FaRegSmile, FaStar } from "react-icons/fa";
 import { ChevronDown, X, Check } from "lucide-react";
 import TopRatedProfiles from "../components/TopRatedProfiles";
 import BrowseByCategory from "../components/BrowseByCategory";
@@ -66,7 +66,7 @@ export default function Home() {
 
     const regex = new RegExp(
       citySearch.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-      "i"
+      "i",
     );
     return dynamicCities.filter((city) => regex.test(city)).slice(0, 5); // Limit to 5 results for better UX
   }, [dynamicCities, citySearch]);
@@ -331,36 +331,47 @@ export default function Home() {
   return (
     <main className="min-h-[100dvh] bg-white pb-safe pt-safe">
       {/* Hero Section */}
-      <section className="mx-auto max-w-screen-xl px-4 py-6 sm:px-6 md:py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          {/* Left Content */}
-          <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-4">
+      <section className="relative w-full overflow-hidden min-h-[500px] md:min-h-[600px]">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src="/assets/hero_banner.png"
+            alt="Find the Right Legal Expertise"
+            className="h-full w-full object-cover"
+            style={{ objectFit: "cover", objectPosition: "center" }}
+          />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 to-indigo-800/20" />
+        </div>
+
+        {/* Content */}
+        <div className="relative mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-20 lg:py-24">
+          <div className="max-w-2xl">
+            <h1 className="mb-4 text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl xl:text-6xl drop-shadow-lg">
               Find the Right Legal Expertise
             </h1>
-            <p className="text-lg text-gray-600 mb-6">
+
+            <p className="mb-6 text-lg text-gray-100 lg:text-xl ">
               Litigation • Advisory • Documentation
             </p>
-
             {/* Search bar */}
             <form
               onSubmit={onSubmit}
-              className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+              className="rounded-2xl border border-white/20 bg-white/10 p-4 backdrop-blur-sm shadow-xl lg:p-6"
             >
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] md:gap-4">
-                {/* Category */}
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto] lg:gap-4">
+                {/* Category Dropdown */}
                 <div className="relative">
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     disabled={dynamicLoading}
-                    className="h-11 w-full appearance-none rounded-lg bg-white px-3 pr-9 text-sm text-gray-900 outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-[#FFA800] disabled:opacity-50 disabled:cursor-not-allowed"
-                    aria-label="Select category"
+                    className="h-12 w-full appearance-none rounded-xl bg-white px-4 pr-10 text-sm text-gray-900 outline-none ring-2 ring-transparent focus:ring-2 focus:ring-[#FFA800] hover:ring-gray-300 transition-all"
                   >
                     <option value="">
                       {dynamicLoading
                         ? "Loading categories..."
-                        : "Select Category"}
+                        : "Select Legal Category"}
                     </option>
                     {dynamicCategories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -368,135 +379,66 @@ export default function Home() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
                 </div>
 
-                {/* City */}
+                {/* City Search with Dropdown */}
                 <div ref={cityDropdownRef} className="relative">
-                  <input
-                    type="text"
-                    value={citySearch}
-                    onChange={(e) => handleCityInputChange(e.target.value)}
-                    onFocus={handleCityInputFocus}
-                    onBlur={handleCityInputBlur}
-                    disabled={dynamicLoading}
-                    placeholder={
-                      dynamicLoading ? "Loading cities..." : "Search City"
-                    }
-                    className={`h-11 w-full rounded-lg bg-white px-3 pr-16 text-sm outline-none ring-1 ring-gray-200 focus:ring-2 focus:ring-[#FFA800] disabled:opacity-50 disabled:cursor-not-allowed ${
-                      citySelected && citySearch
-                        ? "text-green-700 font-medium"
-                        : "text-gray-900"
-                    }`}
-                    aria-label="Search city"
-                  />
-                  {citySearch && !dynamicLoading && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setCitySearch("");
-                        setCity("");
-                        setCityDropdownOpen(false);
-                        setCitySelected(false);
-                      }}
-                      className="absolute right-8 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      aria-label="Clear city search"
-                    >
-                      <X size={16} />
-                    </button>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={citySearch}
+                      onChange={(e) => handleCityInputChange(e.target.value)}
+                      onFocus={handleCityInputFocus}
+                      onBlur={handleCityInputBlur}
+                      placeholder="Search City"
+                      className="h-12 w-full rounded-xl bg-white px-4 pr-12 text-sm text-gray-900 outline-none ring-2 ring-transparent focus:ring-2 focus:ring-[#FFA800] hover:ring-gray-300 transition-all"
+                    />
+                    <FaMapMarkerAlt className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+                  </div>
+
+                  {cityDropdownOpen && filteredCities.length > 0 && (
+                    <div className="absolute top-full z-50 mt-2 w-full rounded-xl border border-gray-200 bg-white shadow-xl max-h-60 overflow-y-auto">
+                      {filteredCities.map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          onClick={() => handleCitySelect(c)}
+                          className="flex w-full items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50 transition-colors first:rounded-t-xl last:rounded-b-xl"
+                        >
+                          <span className="text-gray-800">{c}</span>
+                          {c === city && (
+                            <Check className="h-4 w-4 text-green-600" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   )}
-
-                  {/* City Dropdown */}
-                  {cityDropdownOpen &&
-                    !dynamicLoading &&
-                    filteredCities.length > 0 && (
-                      <div className="absolute top-full z-50 mt-1 w-full max-h-40 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
-                        {filteredCities.map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => handleCitySelect(c)}
-                            className={`w-full px-3 py-2 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-lg last:rounded-b-lg transition-colors flex items-center justify-between ${
-                              citySelected && c === city
-                                ? "bg-green-50 text-green-700 font-medium"
-                                : ""
-                            }`}
-                          >
-                            <span>{c}</span>
-                            {citySelected && c === city && (
-                              <Check className="h-4 w-4 text-green-600" />
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                  {/* No results message */}
-                  {cityDropdownOpen &&
-                    !dynamicLoading &&
-                    citySearch.trim() &&
-                    filteredCities.length === 0 && (
-                      <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-500 shadow-lg">
-                        No cities found
-                      </div>
-                    )}
                 </div>
 
-                {/* Button */}
+                {/* Search Button */}
                 <button
                   type="submit"
-                  className="h-11 w-full rounded-lg bg-[#FFA800] px-4 text-sm font-semibold text-black transition hover:bg-[#FFB524] md:min-w-[140px]"
+                  className="h-12 w-full rounded-xl bg-[#FFA800] px-6 text-sm font-semibold text-black transition-all hover:bg-[#FFB524] hover:shadow-lg active:scale-95 lg:min-w-[160px]"
                 >
                   Search Now!
                 </button>
               </div>
             </form>
 
-            {/* Highlights */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
-                <FaHome className="text-[#EC6325]" />
-                <span className="text-sm font-medium">2M+ Profiles</span>
+            {/* Stats Highlights */}
+            <div className="mt-8 flex flex-wrap gap-3 lg:gap-4">
+              <div className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2.5 text-sm backdrop-blur-md border border-white/30">
+                <FaHome className="h-4 w-4 text-white" />
+                <span className="text-white">2M+ Profiles</span>
               </div>
-              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
-                <FaRegSmile className="text-[#EC6325]" />
-                <span className="text-sm font-medium">46K+ Clients</span>
+              <div className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2.5 text-sm backdrop-blur-md border border-white/30">
+                <FaRegSmile className="h-4 w-4 text-white" />
+                <span className="text-white">46K+ Clients</span>
               </div>
-              <div className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2">
-                <div className="flex gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <FaStar key={i} className="text-yellow-400" />
-                  ))}
-                </div>
-                <span className="text-sm font-medium">4.8 Rating</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Image - You can add an image here if needed */}
-          <div className="hidden md:block">
-            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-amber-50 p-8">
-              <div className="aspect-square relative overflow-hidden rounded-lg">
-                {/* You can add your image here */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <svg
-                      className="h-24 w-24 text-gray-400 mx-auto mb-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                      />
-                    </svg>
-                    <p className="text-gray-600">
-                      Legal professionals across India
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2.5 text-sm backdrop-blur-md border border-white/30">
+                <FaStar className="h-4 w-4 text-white" />
+                <span className="text-white">4.8 Rating</span>
               </div>
             </div>
           </div>
@@ -505,8 +447,8 @@ export default function Home() {
 
       {/* Navigation Buttons Section */}
       <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-10 md:py-12">
-        <div className="ml-9 mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+        <div className="ml-10 mb-8">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
             Explore Our Services
           </h2>
           <p className="text-gray-600 text-sm md:text-base">
