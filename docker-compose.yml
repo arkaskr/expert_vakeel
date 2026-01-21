@@ -8,6 +8,26 @@ services:
     env_file:
       - ./server/.env
 
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.rule=Host(`api.legalnetwork.in`)
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.entrypoints=web
+      - traefik.http.services.pvc-eration-d8p3pk-10-web.loadbalancer.server.port=4000
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.service=pvc-eration-d8p3pk-10-web
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.middlewares=redirect-to-https@file
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.rule=Host(`api.legalnetwork.in`)
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.entrypoints=websecure
+      - traefik.http.services.pvc-eration-d8p3pk-10-websecure.loadbalancer.server.port=4000
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.service=pvc-eration-d8p3pk-10-websecure
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.tls.certresolver=letsencrypt
+      - traefik.enable=true
+      - traefik.http.routers.pvc_portal.rule=Host(`api.legalnetwork.in`)
+      - traefik.http.routers.pvc_portal.entrypoints=websecure
+      - traefik.http.routers.pvc_portal.tls.certresolver=letsencrypt
+      - traefik.http.services.pvc_portal.loadbalancer.server.port=4000
+
   user:
     build: ./expert_vakeel
     container_name: expert_vakeel
@@ -17,12 +37,25 @@ services:
     ports:
       - 3004:3004
 
-  legalnetwork:
-    build: ./legalnetwork
-    container_name: legalnetwork
-    command: npm run dev
-    ports:
-      - 3002:3002
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-web.rule=Host(`expertvakeel.com`)
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-web.entrypoints=web
+      - traefik.http.services.expert-vakeel-expert-vakeel-0otvfv-1-web.loadbalancer.server.port=3004
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-web.service=expert-vakeel-expert-vakeel-0otvfv-1-web
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-web.middlewares=redirect-to-https@file
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-websecure.rule=Host(`expertvakeel.com`)
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-websecure.entrypoints=websecure
+      - traefik.http.services.expert-vakeel-expert-vakeel-0otvfv-1-websecure.loadbalancer.server.port=3004
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-websecure.service=expert-vakeel-expert-vakeel-0otvfv-1-websecure
+      - traefik.http.routers.expert-vakeel-expert-vakeel-0otvfv-1-websecure.tls.certresolver=letsencrypt
+      - traefik.enable=true
+      - traefik.http.routers.pvc_portal.rule=Host(`expertvakeel.com`)
+      - traefik.http.routers.pvc_portal.entrypoints=websecure
+      - traefik.http.routers.pvc_portal.tls.certresolver=letsencrypt
+      - traefik.http.services.pvc_portal.loadbalancer.server.port=3004
 
   admin:
     build: ./admin
@@ -33,3 +66,23 @@ services:
 
     ports:
       - 3001:3001
+
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.rule=Host(`admin.expertvakeel.com`)
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.entrypoints=web
+      - traefik.http.services.pvc-eration-d8p3pk-10-web.loadbalancer.server.port=3001
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.service=pvc-eration-d8p3pk-10-web
+      - traefik.http.routers.pvc-eration-d8p3pk-10-web.middlewares=redirect-to-https@file
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.rule=Host(`admin.expertvakeel.com`)
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.entrypoints=websecure
+      - traefik.http.services.pvc-eration-d8p3pk-10-websecure.loadbalancer.server.port=3001
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.service=pvc-eration-d8p3pk-10-websecure
+      - traefik.http.routers.pvc-eration-d8p3pk-10-websecure.tls.certresolver=letsencrypt
+      - traefik.enable=true
+      - traefik.http.routers.pvc_portal.rule=Host(`admin.expertvakeel.com`)
+      - traefik.http.routers.pvc_portal.entrypoints=websecure
+      - traefik.http.routers.pvc_portal.tls.certresolver=letsencrypt
+      - traefik.http.services.pvc_portal.loadbalancer.server.port=3001
