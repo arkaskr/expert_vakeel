@@ -15,15 +15,15 @@ services:
     env_file:
       - ./expert_vakeel/.env
     ports:
-      - 3000:3000
-    
+      - 3004:3004
+
   legalnetwork:
     build: ./legalnetwork
     container_name: legalnetwork
     command: npm run dev
     ports:
       - 3002:3002
-    
+
   admin:
     build: ./admin
     container_name: admin
