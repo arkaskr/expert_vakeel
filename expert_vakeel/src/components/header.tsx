@@ -1,6 +1,6 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, User2, Menu, X } from "lucide-react";
+import { User2, Menu, X } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 
 const NAV_ITEMS = [
@@ -33,15 +33,6 @@ export default function Header() {
       return () => clearTimeout(timeoutId);
     }
   }, [q, navigate]);
-
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const term = q.trim();
-    if (term) {
-      setOpen(false);
-      navigate(`/findprofile?search=${encodeURIComponent(term)}`);
-    }
-  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur shadow-sm">
@@ -141,10 +132,29 @@ export default function Header() {
         {/* Search Bar Row */}
         {/* <div className="mt-4">
           <form
-            onSubmit={onSubmit}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const term = q.trim();
+              if (term) {
+                setOpen(false);
+                navigate(`/findprofile?search=${encodeURIComponent(term)}`);
+              }
+            }}
             className="relative w-full max-w-2xl mx-auto"
           >
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+            <svg
+              className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}

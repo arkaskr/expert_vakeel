@@ -1,8 +1,7 @@
-// src/app/Service/ServiceList.tsx
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { serviceAPI, type Service } from "../../services/api";
-import { ChevronRight, Loader, Search, ArrowRight } from "lucide-react";
+import { Loader, ArrowRight } from "lucide-react";
 
 export default function ServiceList() {
   const navigate = useNavigate();
@@ -112,7 +111,19 @@ export default function ServiceList() {
         {filteredServices.length === 0 ? (
           <div className="rounded-3xl bg-white p-12 text-center shadow-xl">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50">
-              <Search className="h-8 w-8 text-blue-400" />
+              <svg
+                className="h-8 w-8 text-blue-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
             </div>
             <h3 className="text-lg font-medium text-gray-900">
               No services found

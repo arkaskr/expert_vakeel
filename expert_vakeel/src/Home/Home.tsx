@@ -3,7 +3,7 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHome, FaMapMarkerAlt, FaRegSmile, FaStar } from "react-icons/fa";
-import { ChevronDown, X, Check } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import TopRatedProfiles from "../components/TopRatedProfiles";
 import BrowseByCategory from "../components/BrowseByCategory";
 import WhyExpertVakeel from "../components/whyexpertVakeel";
@@ -11,18 +11,6 @@ import { queryAPI, publicUserAPI } from "../services/api";
 import type { Query } from "../services/api";
 import useAuth from "../hooks/useAuth";
 import ServiceList from "../app/Service/ServiceList";
-
-// const QUERY_CATEGORIES = [
-//   "All",
-//   "Civil Matters",
-//   "Criminal Matters",
-//   "Family Matters",
-//   "Labour/Employee Matters",
-//   "Taxation Matters",
-//   "Business Matters",
-//   "Supreme Court Matters",
-//   "High Court Matters",
-// ];
 
 export default function Home() {
   const navigate = useNavigate();
@@ -33,7 +21,6 @@ export default function Home() {
   const [city, setCity] = useState("");
   const [citySearch, setCitySearch] = useState("");
   const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
-  const [citySelected, setCitySelected] = useState(false);
 
   // Dynamic data from API
   const [dynamicCities, setDynamicCities] = useState<string[]>([]);
@@ -74,14 +61,12 @@ export default function Home() {
   const handleCityInputChange = (value: string) => {
     setCitySearch(value);
     setCityDropdownOpen(true);
-    setCitySelected(false); // Mark as not selected when user types
   };
 
   const handleCitySelect = (selectedCity: string) => {
     setCity(selectedCity);
     setCitySearch(selectedCity);
     setCityDropdownOpen(false);
-    setCitySelected(true); // Mark as selected when chosen from dropdown
   };
 
   const handleCityInputFocus = () => {
@@ -253,7 +238,6 @@ export default function Home() {
   }, []);
 
   const [selectedCat] = useState<string>("All");
-  // const [catOpen, setCatOpen] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const formatTimeAgo = (createdAt: any) => {
@@ -457,107 +441,10 @@ export default function Home() {
         </div>
 
         <ServiceList />
-
-        {/* <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <button
-            onClick={() => navigate("/findprofile")}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl border border-blue-200 hover:border-blue-300"
-          >
-            <div className="relative z-10">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg group-hover:bg-blue-600 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Find Lawyers & Law Firms</h3>
-              <p className="text-sm text-gray-600">Connect with verified legal professionals across India</p>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-
-          <button
-            onClick={() => navigate("/querypage")}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-green-100 p-6 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl border border-green-200 hover:border-green-300"
-          >
-            <div className="relative z-10">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-500 text-white shadow-lg group-hover:bg-green-600 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Ask Queries</h3>
-              <p className="text-sm text-gray-600">Get answers to your legal questions from experts</p>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-green-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-
-          <button
-            onClick={() => navigate("/blogs")}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 p-6 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl border border-purple-200 hover:border-purple-300"
-          >
-            <div className="relative z-10">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-purple-500 text-white shadow-lg group-hover:bg-purple-600 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Blogs</h3>
-              <p className="text-sm text-gray-600">Read legal insights and expert opinions</p>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-
-          <button
-            onClick={() => navigate("/support")}
-            className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 p-6 text-left transition-all duration-300 hover:scale-105 hover:shadow-xl border border-orange-200 hover:border-orange-300"
-          >
-            <div className="relative z-10">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-orange-500 text-white shadow-lg group-hover:bg-orange-600 transition-colors">
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.25a9.75 9.75 0 105.25 17.496A9.75 9.75 0 0112 2.25zm0 2.25a7.5 7.5 0 100 15 7.5 7.5 0 000-15z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">Help Centre</h3>
-              <p className="text-sm text-gray-600">Get support and find answers to common questions</p>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
-        </div> */}
       </section>
 
       <TopRatedProfiles />
 
-      {/* Service Promotion Section */}
-      {/* <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 md:py-16">
-        <div className="overflow-hidden rounded-3xl bg-[#F8F9FA] md:grid md:grid-cols-2"> */}
-      {/* Left: Image */}
-      {/* <div className="relative h-64 w-full md:h-full">
-            <img
-              src="/assets/lawyer.webp"
-              alt="Legal Services"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div> */}
-
-      {/* Right: Content */}
-      {/* <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
-            <h2 className="mb-4 text-3xl font-bold text-gray-900 md:text-4xl">
-              Expert Legal Services at Your Fingertips
-            </h2>
-            <p className="mb-8 text-lg text-gray-600">
-              Get professional legal assistance for all your needs. From documentation to representation, our verified experts are here to help you navigate the legal system with ease.
-            </p>
-            <div>
-              <button
-                onClick={() => navigate("/services")}
-                className="rounded-full bg-black px-8 py-3.5 text-base font-semibold text-white transition-transform hover:scale-105 hover:shadow-lg active:scale-95"
-              >
-                Book Now
-              </button>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <BrowseByCategory onCategoryClick={handleCategoryClick} />
 
       {/* Explore Or Ask Legal Queries */}
@@ -676,59 +563,6 @@ export default function Home() {
               />
             </svg>
           </button>
-        </div>
-
-        {/* Mobile Category Select (touch friendly) */}
-        <div className="mt-4 md:hidden">
-          <div className="relative inline-block">
-            {/* <button
-              onClick={() => setCatOpen((v) => !v)}
-              className="min-w-[200px] rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-left text-sm text-gray-700 shadow-sm transition-colors hover:bg-white flex items-center justify-between gap-3"
-            >
-              <span
-                className={
-                  !selectedCat || selectedCat === "All" ? "text-gray-400" : ""
-                }
-              >
-                {selectedCat === "All" ? "Select Category" : selectedCat}
-              </span>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                className="opacity-60"
-              >
-                <path
-                  d="M6 9l6 6 6-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </button> */}
-
-            {/* {catOpen && (
-              <div className="absolute left-0 z-10 mt-2 w-[220px] overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
-                <ul className="max-h-64 overflow-auto py-1 text-sm">
-                  {QUERY_CATEGORIES.map((c) => (
-                    <li key={c}>
-                      <button
-                        onClick={() => {
-                          setSelectedCat(c);
-                          setCatOpen(false);
-                        }}
-                        className={`block w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
-                          selectedCat === c ? "font-semibold" : ""
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )} */}
-          </div>
         </div>
       </section>
 
