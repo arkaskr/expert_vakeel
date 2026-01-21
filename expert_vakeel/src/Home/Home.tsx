@@ -331,7 +331,7 @@ export default function Home() {
   return (
     <main className="min-h-[100dvh] bg-white pb-safe pt-safe">
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden min-h-[500px] md:min-h-[600px]">
+      <section className="relative w-full overflow-hidden min-h-[380px] md:min-h-[600px]">
         {/* Background Image */}
         <div className="absolute inset-0">
           <img
@@ -345,7 +345,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-20 lg:py-24">
+        <div className="relative mx-auto max-w-screen-xl px-4 py-8 sm:px-6 md:py-20 lg:py-24">
           <div className="max-w-2xl">
             <h1 className="mb-4 text-3xl font-bold leading-tight text-white md:text-4xl lg:text-5xl xl:text-6xl drop-shadow-lg">
               Find the Right Legal Expertise
@@ -427,7 +427,7 @@ export default function Home() {
             </form>
 
             {/* Stats Highlights */}
-            <div className="mt-8 flex flex-wrap gap-3 lg:gap-4">
+            <div className="mt-8 hidden md:flex flex-wrap gap-3 lg:gap-4">
               <div className="flex items-center gap-2 rounded-full bg-white/20 px-4 py-2.5 text-sm backdrop-blur-md border border-white/30">
                 <FaHome className="h-4 w-4 text-white" />
                 <span className="text-white">2M+ Profiles</span>
@@ -446,8 +446,8 @@ export default function Home() {
       </section>
 
       {/* Navigation Buttons Section */}
-      <section className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-10 md:py-12">
-        <div className="ml-10 mb-8">
+      <section className="sm:mx-auto sm:max-w-screen-xl py-8 sm:px-6 sm:py-10 md:py-12">
+        <div className="sm:ml-10 mb-8 px-4">
           <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
             Explore Our Services
           </h2>

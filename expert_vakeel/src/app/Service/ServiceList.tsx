@@ -128,7 +128,7 @@ export default function ServiceList() {
             </button>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {filteredServices.map((service, index) => {
               // Compute logo path dynamically
               const logoPath = `/assets/services_logo/p${index + 1}.png`;
@@ -138,36 +138,44 @@ export default function ServiceList() {
                   key={service.id}
                   onClick={() => handleServiceClick(service.id)}
                   className="
-        group cursor-pointer
-        flex items-center gap-4
-        rounded-2xl bg-white
-        border border-gray-100
-        px-5 py-4
-        shadow-sm
-        transition-all duration-300
-        hover:-translate-y-[2px]
-        hover:shadow-md
-      "
+  group cursor-pointer
+  flex items-center gap-3 sm:gap-4
+  rounded-2xl bg-white
+  border border-gray-100
+  px-3 py-3 sm:px-5 sm:py-4
+  shadow-sm
+  transition-all duration-300
+  hover:-translate-y-[2px]
+  hover:shadow-md
+"
                 >
                   {/* LEFT ICON / LOGO */}
                   <div
                     className="
-          flex h-15 w-15 shrink-0 items-center justify-center
-          rounded-xl
-          bg-blue-50
-          transition
-          group-hover:bg-blue-50
-        "
+    flex h-10 w-10 sm:h-15 sm:w-15
+    shrink-0 items-center justify-center
+    rounded-xl
+    bg-blue-50
+    transition
+    group-hover:bg-blue-50
+  "
                   >
                     <img
                       src={logoPath}
                       alt={service.name}
-                      className="h-15 w-15 object-contain"
+                      className="h-10 w-10 sm:h-15 sm:w-15 object-contain"
                     />
                   </div>
 
                   {/* TITLE */}
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3
+                    className="
+    text-sm sm:text-lg
+    font-semibold text-gray-900
+    leading-tight
+    line-clamp-2
+  "
+                  >
                     {service.name}
                   </h3>
 
